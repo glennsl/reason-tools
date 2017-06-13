@@ -583,10 +583,10 @@ body {
   margin: 0px;
   line-height: 20px;
   /* backgroundColor */
-  background-color: #2b303b;
+  background-color: #f5f5ff;
 
   /* colorText */
-  color: #c0c5ce;
+  color: #445;
   padding: 40px;
   padding-top: 50px;
 }
@@ -628,7 +628,7 @@ a:hover,a:focus {
 
 .typetable {
   /* So that top level pre's margin-bottom isn't conflicting */
-  margin-top: -10px;
+  /*margin-top: -10px;*/
 }
 
 pre, .typetable {
@@ -640,20 +640,20 @@ pre, .typetable {
 
 .constructor {
   /* colorRed  */
-  color: #BF616A;
+  color: #f5871f;
 }
 
 .keyword {
   /* colorKeyword (purple) */
-  color: #b48ead;
+  color: #8959a8;
 }
 
 .type {
-  color: #BF616A;
+  color: #f5871f;
 }
 
 .string {
-  color: #91B376;
+  color: #718c00;
 }
 
 pre {
@@ -682,8 +682,6 @@ code {
  * code.code are typically inline code, in an info section - not code snippets.
  */
 .info code.code, .param_info code.code {
-  /* backgroundColorInlineCode */
-  background-color: #393d48;
   border-radius:1px;
   padding: 1px 3px 1px 3px;
 }
@@ -893,7 +891,6 @@ h1 > a:active, h1 > a:focus, h1 > a:hover {
 
 .indextable {
   /* backgroundColor */
-  background-color: #2b303b;
 }
 
 .indextable td {
@@ -907,8 +904,6 @@ h1 > a:active, h1 > a:focus, h1 > a:hover {
 
 
 body > .info {
-  /* backgroundColorPanel */
-  background-color: #313641;
   padding: 20px;
   margin-left:20px;
   margin-top: 15px;
@@ -921,9 +916,7 @@ body > .info {
 
 
 body > .param_info {
-  /* backgroundColorPanel */
   margin-top:1px;
-  background-color: #313641;
   margin-left: 20px;
   padding: 15px;
   /* colorGreen */
@@ -1002,8 +995,6 @@ body > pre {
 }
 .codepre {
   padding:10px;
-  /* backgroundColorInlineCode */
-  background-color: #393d48;
 }
 .info > .codepre > .code {
   font-weight: normal;
@@ -1032,7 +1023,7 @@ body > pre {
 
 pre, code, .code {
   /* colorText */
-  color: #c0c5ce;
+  color: #445;
 }
 
 pre, code, .code, pre *, code *, .code * {
@@ -1070,4 +1061,41 @@ td[bgcolor=white] {
 
 .lstframe {
   background-color: transparent !important;
+  border-left: 2px solid #dd4b37;
+  font-size: 13px;
+  width: 100%;
+}
+
+.lstframe pre, .lstframe td {
+  padding-left: 1em;
+}
+
+body > pre,
+body > .type-declaration {
+  margin-top: 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #dde;
+  margin-bottom: 1em;
+}
+
+.region {
+  margin-bottom: 4em;
+}
+
+/* Core doc fixes: */
+.region > .val > .def {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+.region > .val > .doc {
+  background: #eeeef5;
+  padding: .1ex 2em;
+}
+
+details[open] {
+  border-left: 0.2rem solid #aaa;
+  margin-left: -1.5rem;
+  padding-left: 1.3rem;
+  padding-bottom: 0.5rem;  
 }
