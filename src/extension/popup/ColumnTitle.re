@@ -1,4 +1,8 @@
+[@@@bs.config {jsx: 2}];
+
 open Rebase;
+
+let component = ReasonReact.statelessComponent "ColumnTitle";
 
 let showVersion lang =>
   switch lang {
@@ -11,9 +15,13 @@ let showVersion lang =>
 
 let formatTitle name lang => name ^ " (" ^ lang ^ ")";
 
-let createElement ::name ::lang children::_ () => {
+let make ::name ::lang _ => {
   let title = lang |> Option.mapOr (formatTitle name) name;
-  <span title=(showVersion lang) style=PopupStyles.contextTitle>
-    (ReactRe.stringToElement title)
-  </span>
+  {
+    ...component,
+    render: fun _ _ =>
+      <span title=(showVersion lang) style=PopupStyles.contextTitle>
+        (ReactRe.stringToElement title)
+      </span>
+  }
 };

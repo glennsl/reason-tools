@@ -1,3 +1,5 @@
+[@@@bs.config {jsx: 2}];
+
 open Core;
 
 external refToElement : Dom.element => LocalDom.Element.t = "%identity";
@@ -15,7 +17,7 @@ module InlineListing = {
     };
     None
   };
-  let updatePreRef {state} r => state.preRef = Some r;
+  let updatePreRef {state} r => Js.Null.iter r ((fun r => state.preRef = Some r) [@bs]);
   let render {props, handler} => {
     let translateY = props.slideInFrom == "above" ? "-10vh" : "10vh";
     let className =

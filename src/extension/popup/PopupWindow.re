@@ -1,5 +1,6 @@
-open Rebase;
+[@@@bs.config {jsx: 2}];
 
+open Rebase;
 open Core;
 
 module PopupWindow = {

@@ -56,9 +56,9 @@
     "realpath": "*",
     "reason": "facebook/reason",
     "reason-js": "0.3.0",
+    "reason-react": "^0.1.4",
     "rebase": "glennsl/rebase#v0.0.2",
-    "rebel": "reasonml/rebel",
-    "reason-react": "reasonml/reason-react#v0.1.0"
+    "rebel": "reasonml/rebel"
   },
   "rebel": {
     "targets": [
