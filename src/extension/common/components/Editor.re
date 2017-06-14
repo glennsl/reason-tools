@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 let make ::value ::lang ::defaultValue=? ::readOnly=false ::ref=? ::onChange=? _ => {
   ...(ReasonReact.statelessComponent "Editor"),
   render: fun _ _ =>

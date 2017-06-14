@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 let make ::onClick ::style=? _ => {
   ...(ReasonReact.statelessComponent "OpenButton"),
   render: fun _ _ =>

@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 type state = {
   style: ReactDOMRe.Style.t
 };

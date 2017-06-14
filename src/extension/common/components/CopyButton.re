@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 let make ::label="copy" ::text ::onCopy ::style=? _ => {
   ...(ReasonReact.statelessComponent "CopyButton"),
   render: fun _ _ =>

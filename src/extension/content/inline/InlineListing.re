@@ -1,38 +1,34 @@
-[@@@bs.config {jsx: 2}];
-
 open Core;
 
 external refToElement : Dom.element => LocalDom.Element.t = "%identity";
 
-module InlineListing = {
-  include ReactRe.Component.Stateful;
-  let name = "InlineListing";
-  type props = {lang: string, text: string, slideInFrom: string, open_: string => unit};
-  type state = {mutable preRef: option Dom.element};
-  let getInitialState _ => {preRef: None};
-  let componentDidMount {state} => {
+type state = {mutable preRef: option Dom.element};
+
+let make ::lang ::text ::slideInFrom ::open_ _ => {
+  ...(ReasonReact.statefulComponent "InlineListing"),
+  initialState: fun () => {preRef: None},
+  didMount: fun state _ => {
     switch state.preRef {
     | Some r => Hljs.highlightBlock (refToElement r)
     | None => ()
     };
-    None
-  };
-  let updatePreRef {state} r => Js.Null.iter r ((fun r => state.preRef = Some r) [@bs]);
-  let render {props, handler} => {
-    let translateY = props.slideInFrom == "above" ? "-10vh" : "10vh";
+    ReasonReact.NoUpdate
+  },
+  render: fun _ _ => {
+    let translateY = slideInFrom == "above" ? "-10vh" : "10vh";
     let className =
       Util.classNames [
         ("listing-container", true),
-        ("ml", props.lang == "ML"),
-        ("re", props.lang == "RE")
+        ("ml", lang == "ML"),
+        ("re", lang == "RE")
       ];
     <Transition
-      before=(ReactDOMRe.Style.make transform::("translateY(" ^ translateY ^ ")") ())
+      before=(ReactDOMRe.Style.make transform::({j|translateY($translateY)|j}) ())
       after=(ReactDOMRe.Style.make transform::"translateY(0)" transition::"transform 250ms" ())>
       <div className onClick=(fun e => ReactEventRe.Mouse.stopPropagation e)>
-        <div className="sidebar"> (ReactRe.stringToElement props.lang) </div>
+        <div className="sidebar"> (ReactRe.stringToElement lang) </div>
         <div className="main">
-          <pre ref=(handler updatePreRef)> (ReactRe.stringToElement props.text) </pre>
+          <pre ref=(handler updatePreRef)> (ReactRe.stringToElement text) </pre>
           <footer>
             <CopyButton
               text=props.text
@@ -40,20 +36,16 @@ module InlineListing = {
               onCopy=ignore
             />
             <OpenButton
-              style=(
-                      ReactDOMRe.Style.make
-                        cursor::"pointer" height::"1em" width::"1em" marginLeft::"1em" ()
-                    )
-              onClick=(fun _ => props.open_ props.text)
+              style=(ReactDOMRe.Style.make
+                cursor::"pointer"
+                height::"1em"
+                width::"1em"
+                marginLeft::"1em" ())
+              onClick=(fun _ => open_ text)
             />
           </footer>
         </div>
       </div>
     </Transition>
-  };
+  }
 };
-
-include ReactRe.CreateComponent InlineListing;
-
-let createElement ::lang ::text ::slideInFrom ::open_ =>
-  wrapProps {lang, text, slideInFrom, open_};

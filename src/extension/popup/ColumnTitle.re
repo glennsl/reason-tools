@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 open Rebase;
 
 let component = ReasonReact.statelessComponent "ColumnTitle";

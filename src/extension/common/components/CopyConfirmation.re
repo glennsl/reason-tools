@@ -1,5 +1,3 @@
-[@@@bs.config {jsx: 2}];
-
 let iconStyle = ReactDOMRe.Style.make fontSize::"16vh" ();
 let textStyle = ReactDOMRe.Style.make fontSize::"3vh" whiteSpace::"nowrap" marginTop::"4vh" ();
 
