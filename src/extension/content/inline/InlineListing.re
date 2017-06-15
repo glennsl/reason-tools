@@ -2,7 +2,13 @@ open Core;
 
 external refToElement : Dom.element => LocalDom.Element.t = "%identity";
 
-type state = {mutable preRef: option Dom.element};
+type state = {preRef: option Dom.element};
+
+let updatePreRef nullableRef _ _ =>
+  switch (Js.Null.to_opt nullableRef) {
+  | Some ref => ReasonReact.SilentUpdate {preRef: Some ref};
+  | None => ReasonReact.NoUpdate
+  };
 
 let make ::lang ::text ::slideInFrom ::open_ _ => {
   ...(ReasonReact.statefulComponent "InlineListing"),
@@ -14,7 +20,7 @@ let make ::lang ::text ::slideInFrom ::open_ _ => {
     };
     ReasonReact.NoUpdate
   },
-  render: fun _ _ => {
+  render: fun _ self => {
     let translateY = slideInFrom == "above" ? "-10vh" : "10vh";
     let className =
       Util.classNames [
@@ -28,10 +34,10 @@ let make ::lang ::text ::slideInFrom ::open_ _ => {
       <div className onClick=(fun e => ReactEventRe.Mouse.stopPropagation e)>
         <div className="sidebar"> (ReactRe.stringToElement lang) </div>
         <div className="main">
-          <pre ref=(handler updatePreRef)> (ReactRe.stringToElement text) </pre>
+          <pre ref=(self.update updatePreRef)> (ReactRe.stringToElement text) </pre>
           <footer>
             <CopyButton
-              text=props.text
+              text=text
               style=(ReactDOMRe.Style.make cursor::"pointer" ())
               onCopy=ignore
             />

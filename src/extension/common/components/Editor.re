@@ -1,9 +1,9 @@
-let make ::value ::lang ::defaultValue=? ::readOnly=false ::ref=? ::onChange=? _ => {
+let make ::value ::lang ::defaultValue=? ::readOnly=false ::inputRef=? ::onChange=? _ => {
   ...(ReasonReact.statelessComponent "Editor"),
   render: fun _ _ =>
     <CodeMirror
       value=value
-      ref=?ref
+      inputRef=?inputRef
       defaultValue=?defaultValue
       onChange=?onChange
       options={

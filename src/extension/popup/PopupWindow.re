@@ -1,77 +1,71 @@
-[@@@bs.config {jsx: 2}];
-
 open Rebase;
 open Core;
 
-module PopupWindow = {
-  include ReactRe.Component.Stateful;
-  let name = "PopupWindow";
-  type props = {
-    inText: string,
-    outText: string,
-    inLang: option string,
-    outLang: option string,
-    link: string,
-    onOpen: string => unit,
-    onInputChanged: string => unit
+type state = {
+  copyConfirmation: option string, 
+  inputRef: option ReasonReact.reactRef
+};
+
+let showCopyConfirmation text () state self => {
+  Util.setTimeout (self.ReasonReact.update (fun () _ _ => ReasonReact.Update {...state, copyConfirmation: None})) 2500;
+  ReasonReact.Update {...state, copyConfirmation: Some text}
+};
+/*
+let updateInputRef nullableRef state _ =>
+  switch (Js.Null.to_opt nullableRef) {
+  | Some ref => ReasonReact.Update {...state, inputRef: Some ref};
+  | None => ReasonReact.NoUpdate
   };
-  type state = {copyConfirmation: option string, mutable inputRef: option ReactRe.reactRef};
-  /* Init */
-  let getInitialState _ => {copyConfirmation: None, inputRef: None};
-  /* Actions */
-  let showCopyConfirmation text {state, updater} () => {
-    Util.setTimeout (updater (fun _ () => Some {...state, copyConfirmation: None})) 2500;
-    Some {...state, copyConfirmation: Some text}
-  };
-  let updateInputRef {state} ref => state.inputRef = Some ref;
-  /* Lifecycle events */
-  let componentDidMount {state} => {
+*/
+let updateInputRef ref state _ =>
+  ReasonReact.SilentUpdate {...state, inputRef: Some ref};
+
+let make ::inText ::inLang ::outText ::outLang ::link ::onOpen ::onInputChanged _ => {
+  ...(ReasonReact.statefulComponent "PopupWindow"),
+  initialState: fun () => {copyConfirmation: None, inputRef: None},
+  didMount: fun state _ => {
     switch state.inputRef {
     | None => ()
     | Some ref =>
+      Js.log ref;
       CodeMirror.focus ref;
       CodeMirror.execCommand ref "selectAll"
     };
-    None
-  };
-  let render {props, state, updater, handler} =>
+    ReasonReact.NoUpdate
+  },
+  render: fun state self =>
     <div style=PopupStyles.popup>
       <div style=PopupStyles.popupColumn>
-        <h1 style=PopupStyles.popupContext> <ColumnTitle name="In" lang=props.inLang /> </h1>
+        <h1 style=PopupStyles.popupContext> <ColumnTitle name="In" lang=inLang /> </h1>
         <Editor
-          value=props.inText
-          lang=props.inLang
-          ref=(handler updateInputRef)
-          onChange=props.onInputChanged
+          value=inText
+          lang=inLang
+          inputRef=(self.update updateInputRef)
+          onChange=onInputChanged
         />
       </div>
       <div style=PopupStyles.popupColumn>
         <h1 style=PopupStyles.popupContext>
-          <ColumnTitle name="Out" lang=props.outLang />
+          <ColumnTitle name="Out" lang=outLang />
           <CopyButton
             style=PopupStyles.contextLink
             label="share"
-            text=props.link
-            onCopy=(updater (showCopyConfirmation "Link copied to clipboard"))
+            text=link
+            onCopy=(self.update (showCopyConfirmation "Link copied to clipboard"))
           />
           <CopyButton
             style=PopupStyles.contextLink
-            text=props.outText
-            onCopy=(updater (showCopyConfirmation "Text copied to clipboard"))
+            text=outText
+            onCopy=(self.update (showCopyConfirmation "Text copied to clipboard"))
           />
-          <OpenButton style=PopupStyles.contextIcon onClick=(fun _ => props.onOpen props.inText) />
+          <OpenButton style=PopupStyles.contextIcon onClick=(fun _ => onOpen inText) />
         </h1>
-        <Editor value=props.outText lang=props.outLang readOnly=true />
+        <Editor value=outText lang=outLang readOnly=true />
         <CopyConfirmation
           style=PopupStyles.copyConfirmation
           show=(Option.isSome state.copyConfirmation)
           text=(Option.getOr "" state.copyConfirmation)
         />
       </div>
-    </div>;
+    </div>
 };
-
-include ReactRe.CreateComponent PopupWindow;
-
-let createElement ::inText ::inLang ::outText ::outLang ::link ::onOpen ::onInputChanged =>
-  wrapProps {inText, inLang, outText, outLang, onOpen, link, onInputChanged};

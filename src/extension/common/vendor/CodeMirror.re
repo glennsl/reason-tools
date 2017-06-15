@@ -1,6 +1,7 @@
 external codeMirror: ReactRe.reactClass = "react-codemirror" [@@bs.module];
 
 external focus : ReactRe.reactRef => unit = "" [@@bs.send];
+
 let execCommand : ReactRe.reactRef => string => unit = [%bs.raw {|
   function (el, command) {
     return el.getCodeMirror().execCommand(command);
@@ -13,7 +14,7 @@ let make
   defaultValue::(defaultValue: option string)=?
   onChange::(onChange: option (string => unit))=?
   options::(options: option (Js.t {..}))=?
-  ref::(ref: option (ReasonReact.reactRef => unit))=?
+  inputRef::(inputRef: option (ReasonReact.reactRef => unit))=?
   children =>
   ReasonReact.wrapJsForReason
     reactClass::codeMirror
@@ -23,6 +24,6 @@ let make
       "defaultValue": Js.Null_undefined.from_opt defaultValue,
       "onChange": Js.Null_undefined.from_opt onChange,
       "options": Js.Null_undefined.from_opt options,
-      "ref": Js.Null_undefined.from_opt ref
+      "ref": Js.Null_undefined.from_opt inputRef
     }
     children;  

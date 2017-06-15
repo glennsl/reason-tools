@@ -10,5 +10,5 @@ let make ::before ::after children => {
     ReasonReact.NoUpdate
   },
   render: fun state _ =>
-    <div style=state.style> children </div>
+    <div style=state.style> (ReasonReact.arrayToElement children) </div>
 };
